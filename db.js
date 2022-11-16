@@ -1,5 +1,6 @@
-const { Sequelize } = require("sequelize");
-require("dotenv").config();
+import dotenv from "dotenv";
+import { Sequelize } from "sequelize";
+dotenv.config();
 
 const user = process.env.DBUSER;
 const password = process.env.DBPWD;
@@ -10,7 +11,7 @@ const dbname = process.env.DBNAME;
 // postgres://user:password@host:port/dbname
 const dbconfig = `postgres://${user}:${password}@${host}:${port}/${dbname}`;
 
-const sequelize = new Sequelize(dbconfig, {
+export const sequelize = new Sequelize(dbconfig, {
   // https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor
   sync: { force: true },
   pool: {
@@ -19,5 +20,3 @@ const sequelize = new Sequelize(dbconfig, {
     acquire: 60000,
   },
 });
-
-module.exports = sequelize;

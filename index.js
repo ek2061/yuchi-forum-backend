@@ -1,11 +1,13 @@
-const cors = require("cors");
-const express = require("express");
-const FileStreamRotator = require("file-stream-rotator");
-const fs = require("fs");
-const morgan = require("morgan");
-const path = require("path");
-const sequelize = require("./db");
-require("dotenv").config();
+import cors from "cors";
+import dotenv from "dotenv";
+import express, { json, urlencoded } from "express";
+import { getStream } from "file-stream-rotator";
+import { existsSync, mkdirSync } from "fs";
+import morgan from "morgan";
+import path from "path";
+import url from "url";
+import { sequelize } from "./db.js";
+dotenv.config();
 
 const app = express();
 
@@ -20,9 +22,11 @@ app.get("/db", async (req, res, next) => {
   }
 });
 
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const logDirectory = path.join(__dirname, "logger");
-fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
-var accessLogStream = FileStreamRotator.getStream({
+existsSync(logDirectory) || mkdirSync(logDirectory);
+var accessLogStream = getStream({
   date_format: "YYYYMMDD",
   filename: path.join(logDirectory, "access-%DATE%.log"),
   frequency: "daily",
@@ -31,8 +35,8 @@ var accessLogStream = FileStreamRotator.getStream({
 // setup the logger
 app.use(morgan("combined", { stream: accessLogStream }));
 // setup body-parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 // setup cors
 app.use(cors());
 

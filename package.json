@@ -1,9 +1,11 @@
 {
   "name": "yuchi-forum-backend",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js --experimental-modules",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yuchi",
@@ -17,6 +19,7 @@
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "pg": "^8.8.0",
-    "sequelize": "^6.25.6"
+    "sequelize": "^6.25.6",
+    "url": "^0.11.0"
   }
 }

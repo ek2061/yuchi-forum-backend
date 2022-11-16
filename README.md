@@ -5,7 +5,7 @@
 ```bash
 yarn install
 
-node index.js
+yarn start
 ```
 
 ## ENV
