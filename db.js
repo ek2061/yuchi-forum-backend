@@ -13,6 +13,10 @@ const dbconfig = `postgres://${user}:${password}@${host}:${port}/${dbname}`;
 
 export const sequelize = new Sequelize(dbconfig, {
   // https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-constructor-constructor
+  define: {
+    timestamps: false,
+    freezeTableName: true,
+  },
   sync: { force: true },
   pool: {
     max: 5,
