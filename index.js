@@ -7,6 +7,7 @@ import morgan from "morgan";
 import path from "path";
 import url from "url";
 import { sequelize } from "./db.js";
+import errorHandler from "./middleware/errorHandler.js";
 dotenv.config();
 
 const app = express();
@@ -37,6 +38,8 @@ app.use(morgan("combined", { stream: accessLogStream }));
 // setup body-parser
 app.use(json());
 app.use(urlencoded({ extended: false }));
+// setup error handler
+app.use(errorHandler);
 // setup cors
 app.use(cors());
 
