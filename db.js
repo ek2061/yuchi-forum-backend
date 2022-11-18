@@ -23,4 +23,5 @@ export const sequelize = new Sequelize(dbconfig, {
     idle: 30000,
     acquire: 60000,
   },
+  omitNull: true,
 });

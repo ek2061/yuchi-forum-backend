@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, fn } from "sequelize";
 
 export const postModel = {
   pid: { type: DataTypes.INTEGER, primaryKey: true },
@@ -6,5 +6,5 @@ export const postModel = {
   title: DataTypes.STRING,
   excerpt: DataTypes.STRING,
   content: DataTypes.STRING,
-  createdat: DataTypes.STRING,
+  createdat: { type: DataTypes.STRING, defaultValue: fn("NOW") },
 };
