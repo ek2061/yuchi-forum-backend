@@ -24,17 +24,16 @@ class PostController {
   }
   async createPost(req, res, next) {
     try {
-      const { uid, title, excerpt, content } = req.body;
-      if (!uid || !title || !excerpt || !content) {
+      const { uid, title, content } = req.body;
+      if (!uid || !title || !content) {
         return next(ERROR.InfoIncomplete);
       }
-      const post = await Post.create({
+      await Post.create({
         uid,
         title,
-        excerpt,
+        excerpt: content.substring(0, 100).replaceAll("\n", " "),
         content,
       });
-      console.log(post);
       res.status(200).json({ msg: "success" });
     } catch (err) {
       console.log(err);
