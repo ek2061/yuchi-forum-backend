@@ -40,6 +40,33 @@ class PostController {
       return next(ERROR.ServerError);
     }
   }
+  async patchPost(req, res, next) {
+    try {
+      const { pid, title, content } = req.body;
+      const excerpt =
+        content === null || content === undefined
+          ? undefined
+          : content.substring(0, 100).replaceAll("\n", " ");
+      if (!pid) {
+        return next(ERROR.InfoIncomplete);
+      }
+      const post = await Post.findOne({
+        where: { pid },
+      });
+      if (!post) {
+        return next(ERROR.PostNotExist);
+      }
+      await post.update({
+        title,
+        excerpt,
+        content,
+      });
+      res.status(200).json({ msg: "success" });
+    } catch (err) {
+      console.log(err);
+      return next(ERROR.ServerError);
+    }
+  }
 }
 
 export default new PostController();

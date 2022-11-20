@@ -7,4 +7,8 @@ export const ERROR = {
     statusCode: 500,
     msg: "伺服器發生錯誤",
   },
+  PostNotExist: {
+    statusCode: 404,
+    msg: "貼文不存在",
+  },
 };
