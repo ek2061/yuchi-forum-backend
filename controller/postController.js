@@ -42,7 +42,8 @@ class PostController {
   }
   async patchPost(req, res, next) {
     try {
-      const { pid, title, content } = req.body;
+      const pid = req.params.pid;
+      const { title, content } = req.body;
       const excerpt =
         content === null || content === undefined
           ? undefined
@@ -56,6 +57,7 @@ class PostController {
       if (!post) {
         return next(ERROR.PostNotExist);
       }
+      console.log({ title, excerpt, content });
       await post.update({
         title,
         excerpt,
