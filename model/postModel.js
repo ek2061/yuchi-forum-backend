@@ -7,4 +7,6 @@ export const postModel = {
   excerpt: DataTypes.STRING,
   content: DataTypes.STRING,
   createdat: { type: DataTypes.STRING, defaultValue: fn("NOW") },
+  like: DataTypes.INTEGER,
+  dislike: DataTypes.INTEGER,
 };
