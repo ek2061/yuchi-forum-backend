@@ -22,6 +22,22 @@ class PostController {
       return next(ERROR.ServerError);
     }
   }
+  async listPost(req, res, next) {
+    try {
+      const { limit } = req.query;
+      if (!limit) {
+        return next(ERROR.InfoIncomplete);
+      }
+      const posts = await Post.findAll({
+        limit: limit > 10 ? 10 : limit,
+        order: [["createdat", "DESC"]],
+      });
+      res.status(200).json(posts);
+    } catch (err) {
+      console.log(err);
+      return next(ERROR.ServerError);
+    }
+  }
   async createPost(req, res, next) {
     try {
       const { uid, title, content } = req.body;
