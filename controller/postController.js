@@ -31,6 +31,7 @@ class PostController {
       const posts = await Post.findAll({
         limit: limit > 10 ? 10 : limit,
         order: [["createdat", "DESC"]],
+        attributes: { exclude: ["content"] },
       });
       res.status(200).json(posts);
     } catch (err) {
