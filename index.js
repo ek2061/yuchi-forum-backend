@@ -39,12 +39,12 @@ app.use(morgan("combined", { stream: accessLogStream }));
 // setup body-parser
 app.use(json());
 app.use(urlencoded({ extended: false }));
-// setup error handler
-app.use(errorHandler);
 // setup cors
 app.use(cors());
 // setup router (must be written after cors)
 app.use("/api/post", postApi);
+// setup error handler
+app.use(errorHandler);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
