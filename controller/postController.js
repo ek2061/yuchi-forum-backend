@@ -15,6 +15,7 @@ class PostController {
       }
       const post = await Post.findOne({
         where: { pid },
+        attributes: { exclude: ["excerpt"] },
       });
       res.status(200).json(post);
     } catch (err) {
