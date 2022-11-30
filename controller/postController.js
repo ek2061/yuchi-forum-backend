@@ -19,7 +19,6 @@ class PostController {
       });
       res.status(200).json(post);
     } catch (err) {
-      console.log(err);
       return next(ERROR.ServerError);
     }
   }
@@ -36,7 +35,6 @@ class PostController {
       });
       res.status(200).json(posts);
     } catch (err) {
-      console.log(err);
       return next(ERROR.ServerError);
     }
   }
@@ -54,7 +52,6 @@ class PostController {
       });
       res.status(200).json({ msg: "success" });
     } catch (err) {
-      console.log(err);
       return next(ERROR.ServerError);
     }
   }
@@ -75,7 +72,6 @@ class PostController {
       if (!post) {
         return next(ERROR.PostNotExist);
       }
-      console.log({ title, excerpt, content });
       await post.update({
         title,
         excerpt,
@@ -83,7 +79,6 @@ class PostController {
       });
       res.status(200).json({ msg: "success" });
     } catch (err) {
-      console.log(err);
       return next(ERROR.ServerError);
     }
   }
