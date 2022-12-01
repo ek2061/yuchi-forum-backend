@@ -11,4 +11,8 @@ export const ERROR = {
     statusCode: 404,
     msg: "貼文不存在",
   },
+  CommentNotExist: {
+    statusCode: 404,
+    msg: "評論不存在",
+  },
 };

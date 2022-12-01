@@ -6,6 +6,7 @@ import { existsSync, mkdirSync } from "fs";
 import morgan from "morgan";
 import path from "path";
 import url from "url";
+import commentApi from "./api/commentApi";
 import postApi from "./api/postApi";
 import { sequelize } from "./db.js";
 import errorHandler from "./middleware/errorHandler.js";
@@ -43,6 +44,7 @@ app.use(urlencoded({ extended: false }));
 app.use(cors());
 // setup router (must be written after cors)
 app.use("/api/post", postApi);
+app.use("/api/comment", commentApi);
 // setup error handler
 app.use(errorHandler);
 
