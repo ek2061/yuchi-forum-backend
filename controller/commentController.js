@@ -14,6 +14,7 @@ class CommentController {
         return next(ERROR.InfoIncomplete);
       }
       const comments = await Comment.findAll({
+        where: { pid },
         limit: limit > 10 ? 10 : limit,
         order: [["createdat", "DESC"]],
       });
