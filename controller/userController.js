@@ -36,13 +36,14 @@ class UserController {
       }
       const user = await User.findOne({
         where: { uid: account },
-        attributes: ["password"],
+        attributes: ["uid", "password"],
       });
       if (!user) {
         return next(ERROR.UserNotExist);
       }
       const isMatch = await decrypt(password, user.password);
       if (isMatch) {
+        req.session.uid = user.uid;
         res.status(200).json({ msg: "login success" });
       } else {
         return next(ERROR.PasswordError);
