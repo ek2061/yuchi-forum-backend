@@ -8,6 +8,7 @@ import path from "path";
 import url from "url";
 import commentApi from "./api/commentApi";
 import postApi from "./api/postApi";
+import userApi from "./api/userApi";
 import { sequelize } from "./db.js";
 import errorHandler from "./middleware/errorHandler.js";
 dotenv.config();
@@ -45,6 +46,7 @@ app.use(cors());
 // setup router (must be written after cors)
 app.use("/api/post", postApi);
 app.use("/api/comment", commentApi);
+app.use("/api/user", userApi);
 // setup error handler
 app.use(errorHandler);
 

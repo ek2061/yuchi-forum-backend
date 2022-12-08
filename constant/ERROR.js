@@ -15,4 +15,16 @@ export const ERROR = {
     statusCode: 404,
     msg: "評論不存在",
   },
+  UserAlreadyExist: {
+    statusCode: 409,
+    msg: "使用者帳戸已存在",
+  },
+  UserNotExist: {
+    statusCode: 404,
+    msg: "使用者帳戸不存在",
+  },
+  PasswordError: {
+    statusCode: 400,
+    msg: "密碼錯誤",
+  },
 };
