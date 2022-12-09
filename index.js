@@ -43,7 +43,12 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 // setup cors
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORSORIGIN,
+    credentials: true,
+  })
+);
 // setup session (must be written before api)
 app.use(
   session({
@@ -51,9 +56,8 @@ app.use(
     name: "yuchi.sid",
     saveUninitialized: false,
     resave: true,
-    cookie: {
-      maxAge: 1000 * 60 * 30,
-    },
+    httpOnly: true,
+    cookie: { maxAge: 1000 * 60 * 30 },
   })
 );
 // setup router (must be written after cors)
