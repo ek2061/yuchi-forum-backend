@@ -19,12 +19,8 @@ export const ERROR = {
     statusCode: 409,
     msg: "使用者帳戸已存在",
   },
-  UserNotExist: {
-    statusCode: 404,
-    msg: "使用者帳戸不存在",
-  },
-  PasswordError: {
+  UserOrPasswordError: {
     statusCode: 400,
-    msg: "密碼錯誤",
+    msg: "使用者帳戸或密碼錯誤",
   },
 };

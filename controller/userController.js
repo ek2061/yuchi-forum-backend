@@ -39,14 +39,14 @@ class UserController {
         attributes: ["uid", "password"],
       });
       if (!user) {
-        return next(ERROR.UserNotExist);
+        return next(ERROR.UserOrPasswordError);
       }
       const isMatch = await decrypt(password, user.password);
       if (isMatch) {
         req.session.uid = user.uid;
         res.status(200).json({ msg: "login success" });
       } else {
-        return next(ERROR.PasswordError);
+        return next(ERROR.UserOrPasswordError);
       }
     } catch (err) {
       return next(ERROR.ServerError);
