@@ -36,7 +36,6 @@ class UserController {
       }
       const user = await User.findOne({
         where: { uid: account },
-        attributes: ["uid", "password"],
       });
       if (!user) {
         return next(ERROR.UserOrPasswordError);
@@ -44,7 +43,11 @@ class UserController {
       const isMatch = await decrypt(password, user.password);
       if (isMatch) {
         req.session.uid = user.uid;
-        res.status(200).json({ msg: "login success" });
+        res.status(200).json({
+          msg: "login success",
+          nickname: user.nickname,
+          uid: user.uid,
+        });
       } else {
         return next(ERROR.UserOrPasswordError);
       }

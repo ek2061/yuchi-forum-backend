@@ -57,7 +57,7 @@ app.use(
     saveUninitialized: false,
     resave: true,
     httpOnly: true,
-    cookie: { maxAge: 1000 * 60 * 30 },
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
   })
 );
 // setup router (must be written after cors)
