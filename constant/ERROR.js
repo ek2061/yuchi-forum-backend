@@ -27,4 +27,8 @@ export const ERROR = {
     statusCode: 400,
     msg: "憑證無效",
   },
+  PermissionDenied: {
+    statusCode: 400,
+    msg: "拒絕不符合權限的操作",
+  },
 };

@@ -25,7 +25,8 @@ class CommentController {
   }
   async createComment(req, res, next) {
     try {
-      const { uid, pid, content } = req.body;
+      const { uid } = req.user;
+      const { pid, content } = req.body;
       if (!uid || !pid || !content) {
         return next(ERROR.InfoIncomplete);
       }
@@ -37,14 +38,18 @@ class CommentController {
   }
   async updateComment(req, res, next) {
     try {
+      const { uid } = req.user;
       const cid = req.params.cid;
-      const { uid, content } = req.body;
+      const { content } = req.body;
       if (!uid || !cid) {
         return next(ERROR.InfoIncomplete);
       }
       const comment = await Comment.findOne({
-        where: { uid, cid },
+        where: { cid },
       });
+      if (comment.uid !== uid) {
+        return next(ERROR.PermissionDenied);
+      }
       if (!comment) {
         return next(ERROR.CommentNotExist);
       }

@@ -40,7 +40,8 @@ class PostController {
   }
   async createPost(req, res, next) {
     try {
-      const { uid, title, content } = req.body;
+      const { uid } = req.user;
+      const { title, content } = req.body;
       if (!uid || !title || !content) {
         return next(ERROR.InfoIncomplete);
       }
@@ -57,26 +58,26 @@ class PostController {
   }
   async patchPost(req, res, next) {
     try {
+      const { uid } = req.user;
       const pid = req.params.pid;
       const { title, content } = req.body;
-      const excerpt =
-        content === null || content === undefined
-          ? undefined
-          : content.substring(0, 100).replaceAll("\n", " ");
       if (!pid) {
         return next(ERROR.InfoIncomplete);
       }
       const post = await Post.findOne({
         where: { pid },
       });
+      if (post.uid !== uid) {
+        return next(ERROR.PermissionDenied);
+      }
       if (!post) {
         return next(ERROR.PostNotExist);
       }
-      await post.update({
-        title,
-        excerpt,
-        content,
-      });
+      const excerpt =
+        content === null || content === undefined
+          ? undefined
+          : content.substring(0, 100).replaceAll("\n", " ");
+      await post.update({ title, excerpt, content });
       res.status(200).json({ msg: "success" });
     } catch (err) {
       return next(ERROR.ServerError);
