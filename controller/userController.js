@@ -3,6 +3,7 @@ import { ERROR } from "../constant/ERROR";
 import { sequelize } from "../db";
 import { userModel } from "../model";
 import { decrypt, encrypt } from "../utils/encrpyPassword";
+import TokenController from "../utils/tokenController";
 dotenv.config();
 
 const User = sequelize.define("tb_user", userModel, {});
@@ -42,12 +43,12 @@ class UserController {
       }
       const isMatch = await decrypt(password, user.password);
       if (isMatch) {
-        req.session.uid = user.uid;
-        res.status(200).json({
-          msg: "login success",
-          nickname: user.nickname,
+        const token = await TokenController.signToken({
           uid: user.uid,
+          nickname: user.nickname,
         });
+
+        res.status(200).json({ msg: "login success", token });
       } else {
         return next(ERROR.UserOrPasswordError);
       }

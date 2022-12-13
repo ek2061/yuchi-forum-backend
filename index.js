@@ -1,7 +1,6 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
-import session from "express-session";
 import { getStream } from "file-stream-rotator";
 import { existsSync, mkdirSync } from "fs";
 import morgan from "morgan";
@@ -43,23 +42,7 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 // setup cors
-app.use(
-  cors({
-    origin: process.env.CORSORIGIN,
-    credentials: true,
-  })
-);
-// setup session (must be written before api)
-app.use(
-  session({
-    secret: process.env.SESSIONKEY,
-    name: "yuchi.sid",
-    saveUninitialized: false,
-    resave: true,
-    httpOnly: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
-  })
-);
+app.use(cors());
 // setup router (must be written after cors)
 app.use("/api/post", postApi);
 app.use("/api/comment", commentApi);

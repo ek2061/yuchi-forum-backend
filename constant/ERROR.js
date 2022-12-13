@@ -23,4 +23,8 @@ export const ERROR = {
     statusCode: 400,
     msg: "使用者帳戸或密碼錯誤",
   },
+  TokenError: {
+    statusCode: 400,
+    msg: "憑證無效",
+  },
 };
