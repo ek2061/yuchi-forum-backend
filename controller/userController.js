@@ -48,7 +48,13 @@ class UserController {
           nickname: user.nickname,
         });
 
-        res.status(200).json({ msg: "login success", token });
+        res.status(200).json({
+          msg: "login success",
+          token,
+          uid: user.uid,
+          nickname: user.nickname,
+          expire_ts: Date.now() + 1000 * 60 * 60 * 24,
+        });
       } else {
         return next(ERROR.UserOrPasswordError);
       }
