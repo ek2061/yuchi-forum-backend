@@ -1,10 +1,14 @@
 import dotenv from "dotenv";
 import { ERROR } from "../constant/ERROR";
 import { sequelize } from "../db";
-import { commentModel } from "../model";
+import { commentModel, userModel } from "../model";
 dotenv.config();
 
+const User = sequelize.define("tb_user", userModel, {});
 const Comment = sequelize.define("tb_comment", commentModel, {});
+
+User.hasOne(Comment, { foreignKey: "uid" });
+Comment.belongsTo(User, { foreignKey: "uid" });
 
 class CommentController {
   async listComment(req, res, next) {
@@ -14,12 +18,27 @@ class CommentController {
         return next(ERROR.InfoIncomplete);
       }
       const comments = await Comment.findAll({
+        raw: true,
         where: { pid },
         limit: limit > 10 ? 10 : limit,
         order: [["createdat", "DESC"]],
+        include: [
+          {
+            model: User,
+            required: true,
+            attributes: ["nickname"],
+          },
+        ],
       });
+
+      Object.keys(comments).forEach((key) => {
+        comments[key]["nickname"] = comments[key]["tb_user.nickname"];
+        delete comments[key]["tb_user.nickname"];
+      });
+
       res.status(200).json(comments);
     } catch (err) {
+      console.log(err);
       return next(ERROR.ServerError);
     }
   }
