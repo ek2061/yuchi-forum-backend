@@ -1,10 +1,15 @@
 import dotenv from "dotenv";
 import { ERROR } from "../constant/ERROR";
 import { sequelize } from "../db";
-import { postModel } from "../model";
+import { postModel, userModel } from "../model";
+import { renameAllKeys, renameKey } from "../utils/tools";
 dotenv.config();
 
+const User = sequelize.define("tb_user", userModel, {});
 const Post = sequelize.define("tb_post", postModel, {});
+
+User.hasOne(Post, { foreignKey: "uid" });
+Post.belongsTo(User, { foreignKey: "uid" });
 
 class PostController {
   async findOnePost(req, res, next) {
@@ -14,9 +19,18 @@ class PostController {
         return next(ERROR.InfoIncomplete);
       }
       const post = await Post.findOne({
+        raw: true,
         where: { pid },
         attributes: { exclude: ["excerpt"] },
+        include: [
+          {
+            model: User,
+            required: true,
+            attributes: ["nickname"],
+          },
+        ],
       });
+      renameKey(post, "tb_user.nickname", "nickname");
       res.status(200).json(post);
     } catch (err) {
       return next(ERROR.ServerError);
@@ -29,10 +43,19 @@ class PostController {
         return next(ERROR.InfoIncomplete);
       }
       const posts = await Post.findAll({
+        raw: true,
         limit: limit > 10 ? 10 : limit,
         order: [["createdat", "DESC"]],
         attributes: { exclude: ["content"] },
+        include: [
+          {
+            model: User,
+            required: true,
+            attributes: ["nickname"],
+          },
+        ],
       });
+      renameAllKeys(posts, "tb_user.nickname", "nickname");
       res.status(200).json(posts);
     } catch (err) {
       return next(ERROR.ServerError);
