@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import { ERROR } from "../constant/ERROR";
 import { sequelize } from "../db";
 import { commentModel, userModel } from "../model";
+import { renameAllKeys } from "../utils/tools";
 dotenv.config();
 
 const User = sequelize.define("tb_user", userModel, {});
@@ -30,12 +31,7 @@ class CommentController {
           },
         ],
       });
-
-      Object.keys(comments).forEach((key) => {
-        comments[key]["nickname"] = comments[key]["tb_user.nickname"];
-        delete comments[key]["tb_user.nickname"];
-      });
-
+      renameAllKeys(comments, "tb_user.nickname", "nickname");
       res.status(200).json(comments);
     } catch (err) {
       console.log(err);
